@@ -12,7 +12,7 @@
 <body>
 
 <div class="pure-g" id="layout">
-    <div class="pure-u-1 content pure-u-md-3-4">
+    <div class="pure-u-1 content pure-u-md-1-2 pure-u-lg-1-4">
         <h1>radios <span th:text="${name}"></span></h1>
 
         <table class="pure-table pure-table-bordered pure-table-striped">
@@ -27,6 +27,8 @@
                 <th>passed at</th>
                 <th>since radio</th>
                 <th>rank</th>
+                <th>best split</th>
+                <th>estimated</th>
             </tr>
             </thead>
             <tbody>
@@ -40,6 +42,8 @@
                 <td th:text="${r.passed}"/>
                 <td th:text="${r.runningTimeFormatted}"/>
                 <td th:text="${r.position}"/>
+                <td th:text="${r.bestSplit}"/>
+                <td th:text="${r.estimated} "/>
 
             </tr>
             </tbody>
@@ -47,8 +51,7 @@
     </div>
 
 
-
-    <div class="pure-u-1 content pure-u-md-3-4">
+    <div class="pure-u-1 content pure-u-md-1-2 pure-u-lg-1-4">
         <h1>Last at <span th:text="${r2}"></span></h1>
 
         <table class="pure-table pure-table-bordered pure-table-striped">
@@ -88,7 +91,7 @@
 <script>
     (function() {
 
-        setTimeout(function() {document.location.reload(true)}, 2500);
+        setTimeout(function() {document.location.reload(true)}, 1500);
 
     })  ()
 </script>

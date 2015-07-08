@@ -16,6 +16,8 @@ public class Runner {
     private String runningTime;
     private String currentTime;
     private int position;
+    private String bestSplit;
+    private String estimated;
 
     public Runner(String name, String ename, int startno, String team, String classId, int id, double start, double intime, double mtime) {
         this.name = name;
@@ -124,5 +126,21 @@ public class Runner {
 
     public int getPosition() {
         return position;
+    }
+
+    public void setBestSplit(String bestSplit) {
+        this.bestSplit = bestSplit;
+    }
+
+    public String getBestSplit() {
+        return bestSplit;
+    }
+
+    public void setEstimated(String estimated) {
+        this.estimated = estimated;
+    }
+
+    public String getEstimated() {
+        return estimated;
     }
 }

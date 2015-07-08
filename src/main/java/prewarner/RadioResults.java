@@ -88,12 +88,15 @@ public class RadioResults {
         Map<Integer, Runner> map = runnerMap;
 
         Standings s = new Standings(runnerMap, l1);
+        BestSplits bs = new BestSplits(runnerMap, l1, l2);
 
         List<Runner> res = new ArrayList<>();
         for (Integer rid : lr1.keySet()) {
             Runner runner = map.get(rid);
             if (runner != null && acceptableRunner(runner)) {
                 populateRunner(lr1.get(rid), runner, s);
+                runner.setBestSplit(TimeUtils.msecToHMS(TimeUtils.excelToMsec(bs.getBest(runner.getClassId())), false));
+                runner.setEstimated(TimeUtils.msecToHMS(TimeUtils.excelToMsec(lr1.get(rid).time +   bs.getBest(runner.getClassId())),false));
                 res.add(runner);
             }
         }
@@ -108,7 +111,7 @@ public class RadioResults {
     }
 
     private boolean acceptableRunner(Runner runner) {
-        return true; //runner.getIntime() == 0 && !runner.getTeam().equals("NOTEAM");
+        return runner.getIntime() == 0 && !runner.getTeam().equals("NOTEAM");
     }
 
     private List<RunnerAndTime> getRunnersAtRadio(Integer r1) {
@@ -154,7 +157,7 @@ public class RadioResults {
         runner.setPassed(TimeUtils.msecToHMS(TimeUtils.excelToMsec(r.time), false));
         runner.setRunningTime(TimeUtils.msecToHMS(TimeUtils.getNowInMillis() - TimeUtils.excelToMsec(r.time), false));
         runner.setCurrentTime(TimeUtils.msecToHMS(TimeUtils.getNowInMillis() - TimeUtils.excelToMsec(runner.getStarttime()), false));
-        runner.setPosition(s.getPosition(runner.getClassId(), r.time));
+        runner.setPosition(s.getPosition(runner.getClassId(), r.time - runner.getStarttime()));
     }
 
     private static class RunnerAndTime {
@@ -179,7 +182,8 @@ public class RadioResults {
                         cresList = new ArrayList<>();
                         trs.put(cl, cresList);
                     }
-                    cresList.add(rt.time);
+                    double time = rt.time - runnerMap.get(rt.id).getStarttime();
+                    cresList.add(time);
                 } catch (NullPointerException npe) {
                     log.debug("NPE? for " + rt.id + " /"  + runnerMap.get(rt.id));
                 }
@@ -188,6 +192,7 @@ public class RadioResults {
                 Collections.sort(l);
             }
         }
+
 
         public int getPosition(String classId, double time) {
             List<Double> reslist = trs.get(classId);
@@ -201,4 +206,44 @@ public class RadioResults {
 
         }
     }
+
+    private static class BestSplits {
+        final Map<String,List<Double>> trs = new HashMap<>();
+
+        public BestSplits(Map<Integer, Runner> runnerMap, List<RunnerAndTime> l1, List<RunnerAndTime> l2) {
+            Map<Integer,RunnerAndTime> f1 = Maps.uniqueIndex(l1, new Function<RunnerAndTime, Integer>() {
+                @Override
+                public Integer apply(RunnerAndTime runnerAndTime) {
+                    return runnerAndTime.id;
+                }
+            })                   ;
+            for (RunnerAndTime rt : l2) {
+                try {
+                    String cl = runnerMap.get(rt.id).getClassId();
+                    List<Double> cresList = trs.get(cl);
+                    if (cresList == null) {
+                        cresList = new ArrayList<>();
+                        trs.put(cl, cresList);
+                    }
+                    cresList.add(rt.time - f1.get(rt.id).time);
+                } catch (NullPointerException npe) {
+                    log.debug("NPE? for " + rt.id + " /"  + runnerMap.get(rt.id));
+                }
+            }
+            for (List<Double> l : trs.values()) {
+                Collections.sort(l);
+            }
+
+
+        }
+
+        public Double getBest(String classId){
+            return trs.get(classId).get(0);
+        }
+
+
+    }
+
+
+
 }
