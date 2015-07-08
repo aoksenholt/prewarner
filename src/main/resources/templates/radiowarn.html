@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prewarner</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!--    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"/> -->
+    <link rel="stylesheet" href="/pure-min.css"/>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="refresh" content="1" />-->
+
+</head>
+<body>
+
+<div class="pure-g" id="layout">
+    <div class="pure-u-1 content pure-u-md-3-4">
+        <h1>radios <span th:text="${name}"></span></h1>
+
+        <table class="pure-table pure-table-bordered pure-table-striped">
+            <thead>
+            <tr>
+                <th>startno</th>
+                <th>name</th>
+                <th>team</th>
+                <th>class</th>
+                <th>start at</th>
+                <th>running time</th>
+                <th>passed at</th>
+                <th>since radio</th>
+                <th>rank</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r: ${runnersBetweenRadios}">
+                <td th:text="${r.startno}"/>
+                <td th:text="${r.name}+' '+ ${r.ename}"/>
+                <td th:text="${r.team}"/>
+                <td th:text="${r.classId}"/>
+                <td th:text="${r.startTimeFormatted}"/>
+                <td th:text="${r.currentTime}"/>
+                <td th:text="${r.passed}"/>
+                <td th:text="${r.runningTimeFormatted}"/>
+                <td th:text="${r.position}"/>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="pure-u-1 content pure-u-md-3-4">
+        <h1>Last at <span th:text="${r2}"></span></h1>
+
+        <table class="pure-table pure-table-bordered pure-table-striped">
+            <thead>
+            <tr>
+                <th>startno</th>
+                <th>name</th>
+                <th>team</th>
+                <th>class</th>
+                <th>start at</th>
+                <th>running time</th>
+                <th>passed at</th>
+                <th>since radio</th>
+                <th>rank</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r: ${lastAtR2}">
+                <td th:text="${r.startno}"/>
+                <td th:text="${r.name}+' '+ ${r.ename}"/>
+                <td th:text="${r.team}"/>
+                <td th:text="${r.classId}"/>
+                <td th:text="${r.startTimeFormatted}"/>
+                <td th:text="${r.currentTime}"/>
+                <td th:text="${r.passed}"/>
+                <td th:text="${r.runningTimeFormatted}"/>
+                <td th:text="${r.position}"/>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+<script>
+    (function() {
+
+        setTimeout(function() {document.location.reload(true)}, 2500);
+
+    })  ()
+</script>
+
+</body>
+</html>

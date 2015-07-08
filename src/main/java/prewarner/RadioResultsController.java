@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RadioResultsController {
 
     @Autowired
-    RadioResults rr;
+    JdbcTemplate jt;
 
     @RequestMapping("/radio")
     public String greeting(@RequestParam(value="r1", required=true) Integer r1,
                            @RequestParam(value="r2", required=true) Integer r2,
                            Model model) {
+        RadioResults rr = new RadioResults(jt);
         model.addAttribute("name", "between "+r1+" and " + r2);
         //model.addAttribute("runners", rr.allRunners());
         model.addAttribute("runnersBetweenRadios", rr.runnersBetween(r1, r2));
-        return "greeting";
+        model.addAttribute("lastAtR2", rr.lastAt(r2, 3, 60));
+        model.addAttribute("r2", r2);
+        model.addAttribute("r1", r1);
+        return "radiowarn";
     }
 
 

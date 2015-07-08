@@ -14,6 +14,8 @@ public class Runner {
     private Double behind;
     private String passed;
     private String runningTime;
+    private String currentTime;
+    private int position;
 
     public Runner(String name, String ename, int startno, String team, String classId, int id, double start, double intime, double mtime) {
         this.name = name;
@@ -106,5 +108,21 @@ public class Runner {
 
     public String getRunningTimeFormatted() {
         return runningTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
     }
 }
